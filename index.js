@@ -1,5 +1,6 @@
 import express from 'express'
 const app = express()
+import cors from 'cors'
 
 let notes = [
   {
@@ -27,6 +28,7 @@ const requestLogger = (req, res, next) => {
   next()
 }
 
+app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
 
