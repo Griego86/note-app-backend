@@ -7,6 +7,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build:ui": "rm -rf dist && cd ../note-app-frontend/ && npm run build && cp -r dist ../note-app-backend",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "log:prod": "fly logs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
