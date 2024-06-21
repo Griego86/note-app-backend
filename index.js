@@ -69,14 +69,12 @@ app.post('/api/notes', (req, res, next) => {
 })
 
 app.put('/api/notes/:id', (req, res, next) => {
-  const body = req.body
+  const { content, important } = req.body
 
-  const note = {
-    content: body.content,
-    important: body.important
-  }
-
-  Note.findByIdAndUpdate(req.params.id, note, { new:true })
+  Note.findByIdAndUpdate(
+    req.params.id, 
+    { content, important },
+    { new:true, runValidators: true, context: 'query' })
     .then(updatedNote => {
       res.json(updatedNote)
     })
