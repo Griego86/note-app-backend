@@ -58,21 +58,18 @@ const generateId = () => {
 app.post('/api/notes', (req, res) => {
   const body = req.body
 
-  if (!body.content) {
-    return res.status(400).json({
-      error: 'content missing'
-    })
+  if (body.content === undefined) {
+    return res.status(400).json({ error: 'content missing' })
   }
 
-  const note = {
+  const note = new Note({
     content: body.content,
-    important: Boolean(body.important) || false,
-    id: generateId()
-  }
+    important: body.important || false
+  })
 
-  notes = notes.concat(note)
-  
-  res.json(note)
+  note.save().then(savedNote => {
+    res.json(savedNote)
+  })
 })
 
 const unknownEndpoint = (req, res) => {
