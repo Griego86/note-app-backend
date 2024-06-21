@@ -21,7 +21,7 @@ const noteSchema = new mongoose.Schema({
 const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note({
-  content: 'Browser can execute only JavaScript',
+  content: 'React is not that hard',
   important: false
 })
 
