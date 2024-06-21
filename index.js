@@ -41,11 +41,12 @@ app.get('/api/notes/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id' , (req, res) => {
-  const id = Number(req.params.id)
-  notes = notes.filter(note => note.id === id)
-
-  res.status(204).end()
+app.delete('/api/notes/:id' , (req, res, next) => {
+  Note.findByIdAndDelete(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/notes', (req, res) => {
