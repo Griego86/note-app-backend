@@ -2,10 +2,9 @@ import express from "express"
 const notesRouter = express.Router()
 import Note from '../models/note.js'
 
-notesRouter.get('/', (req, res) => {
-  Note.find({}).then(notes => {
-    res.json(notes)
-  })
+notesRouter.get('/', async (req, res) => {
+  const notes = await Note.find({})
+  res.json(notes)
 })
 
 notesRouter.get('/:id', (req, res, next) => {
