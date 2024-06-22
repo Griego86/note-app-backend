@@ -3,6 +3,11 @@ import express from 'express'
 const usersRouter = express.Router()
 import User from '../models/user.js'
 
+usersRouter.get('/', async (req, res) => {
+  const users = await User.find({})
+  res.json(users)
+})
+
 usersRouter.post('/', async (req, res) => {
   const { username, name, password } = req.body
 
