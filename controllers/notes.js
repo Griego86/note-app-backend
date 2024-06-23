@@ -2,6 +2,7 @@ import express from "express"
 const notesRouter = express.Router()
 import Note from '../models/note.js'
 import User from '../models/user.js'
+import jwt from 'jsonwebtoken'
 
 notesRouter.get('/', async (req, res) => {
   const notes = await Note.find({}).populate('user', { username: 1, name: 1 })
@@ -17,10 +18,22 @@ notesRouter.get('/:id', async (req, res) => {
     }
 })
 
+const getTokenFrom = req => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
+
 notesRouter.post('/', async (req, res) => {
   const body = req.body
+  const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'invalid token' })
+  }
 
-  const user = await User.findById(body.userId)
+  const user = await User.findById(decodedToken.id)
 
   const note = new Note({
     content: body.content,
